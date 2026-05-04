@@ -10,9 +10,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
 
 model.eval()
-# ======================
 # PREDICTION FUNCTION
-# ======================
 def predict_message(message: str):
 
     inputs = tokenizer(
@@ -40,10 +38,7 @@ def predict_message(message: str):
             "result": "Ham (Normal Message)",
             "confidence": round(ham_prob * 100, 2)
         }
-
-# ======================
 # TEST MODE
-# ======================
 if __name__ == "__main__":
     msg = input("Enter message: ")
     print(predict_message(msg))
