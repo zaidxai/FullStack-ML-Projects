@@ -311,14 +311,24 @@ const checkSpam = async () => {
   setError(null);
 
   try {
-    const response = await axios.post(
-      "https://zaidxai-spam-mail-detection.hf.space/run/predict",
+    const response = await fetch(
+      "https://zaidxai-spam-mail-detection.hf.space/api/predict",
       {
-        data: [message],
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          data: [message],
+        }),
       },
     );
 
-    const output = response.data.data[0];
+    const data = await response.json();
+    console.log("HF Response:", data);
+
+    const output = data.data?.[0];
+
     setResult(output);
   } catch (err) {
     console.error(err);
