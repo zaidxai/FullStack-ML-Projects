@@ -303,21 +303,30 @@ export default function App() {
     fetchMetrics();
   }, []);
 
-  const checkSpam = async () => {
-    if (!message.trim() || loading) return;
-    setLoading(true);
-    setResult(null);
-    setError(null);
-    try {
-      const response = await axios.post("http://127.0.0.1:8000/predict", { text: message });
-      setResult(response.data);
-    } catch (err) {
-      console.error(err);
-      setError("Backend unreachable. Make sure FastAPI is running on port 8000.");
-    } finally {
-      setLoading(false);
-    }
-  };
+const checkSpam = async () => {
+  if (!message.trim() || loading) return;
+
+  setLoading(true);
+  setResult(null);
+  setError(null);
+
+  try {
+    const response = await axios.post(
+      "https://zaidxai-spam-mail-detection.hf.space/run/predict",
+      {
+        data: [message],
+      },
+    );
+
+    const output = response.data.data[0];
+    setResult(output);
+  } catch (err) {
+    console.error(err);
+    setError("Unable to reach AI model. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) checkSpam();
