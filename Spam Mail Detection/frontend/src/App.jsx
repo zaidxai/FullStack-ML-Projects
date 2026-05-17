@@ -312,7 +312,7 @@ const checkSpam = async () => {
 
   try {
     const response = await fetch(
-      "https://zaidxai-spam-mail-detection.hf.space/api/predict",
+      "https://zaidxai-spam-mail-detection.hf.space/run/predict",
       {
         method: "POST",
         headers: {
@@ -327,7 +327,7 @@ const checkSpam = async () => {
     const data = await response.json();
     console.log("HF Response:", data);
 
-    const output = data.data?.[0];
+    const output = data.data[0];
 
     setResult(output);
   } catch (err) {
